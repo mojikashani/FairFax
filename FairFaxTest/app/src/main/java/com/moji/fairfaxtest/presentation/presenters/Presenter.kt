@@ -9,6 +9,5 @@ import com.moji.fairfaxtest.presentation.Listeners.RestListener
 interface Presenter<in T : RestListener> {
 
     fun attachListener(RestListener: T)
-    fun destroy()
 
 }

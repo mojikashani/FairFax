@@ -19,10 +19,6 @@ class NewsPresenter : Presenter<NewsListener> {
         this.listener = listener
     }
 
-    override fun destroy() {
-
-    }
-
     fun getNewsList() {
         listener?.let {
             it.showProgress("beep")
@@ -39,12 +35,7 @@ class NewsPresenter : Presenter<NewsListener> {
                         }
 
                         override fun onError(e: Throwable) {
-                            val error = e.message
-                            if (error != null) {
-                                it.onError(error)
-                            } else {
-                                it.onError("beep")
-                            }
+                            it.onError(e?.message ?: "beep")
                             it.hideProgress()
                         }
 

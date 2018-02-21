@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() , NewsListener {
     }
 
     override fun onNewsFetched(response: NewsResponseView) {
-        val a = 3
+
     }
 
     override fun hideProgress() {
