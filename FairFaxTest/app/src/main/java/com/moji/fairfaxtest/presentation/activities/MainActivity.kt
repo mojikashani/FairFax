@@ -1,21 +1,26 @@
 package com.moji.fairfaxtest.presentation.activities
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.moji.fairfaxtest.R
 import com.moji.fairfaxtest.presentation.Listeners.NewsListener
 import com.moji.fairfaxtest.presentation.presenters.NewsPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import com.moji.fairfaxtest.domain.entities.NewsAssetView
 import com.moji.fairfaxtest.presentation.Listeners.NewsOnClickListener
 import com.moji.fairfaxtest.presentation.recyclerviews.NewsAdapter
 
 
 class MainActivity : AppCompatActivity() , NewsListener, NewsOnClickListener {
-    private val presenter = NewsPresenter()
+    companion object {
+        val EXTRA_URL : String = "extra_url"
+    }
+    private val presenter = NewsPresenter(this)
     private val newsAdapter = NewsAdapter(emptyList(), this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +48,9 @@ class MainActivity : AppCompatActivity() , NewsListener, NewsOnClickListener {
     }
 
     override fun onNewsAssetClick(url: String) {
-        Toast.makeText(applicationContext, url, Toast.LENGTH_LONG).show()
+        val intent : Intent = Intent(this, ArticleActivity::class.java)
+        intent.putExtra(EXTRA_URL, url)
+        startActivity(intent)
     }
 
     override fun hideProgress() {
@@ -51,15 +58,15 @@ class MainActivity : AppCompatActivity() , NewsListener, NewsOnClickListener {
     }
 
     override fun onAuthorizationError(e: Throwable) {
-
+        Toast.makeText(this,getString(R.string.error_authentication_failed), Toast.LENGTH_LONG).show()
     }
 
-    override fun onError(message: String) {
-
+    override fun onError(message: String?) {
+        Toast.makeText(this,message?:getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show()
     }
 
     override fun onNoNetworkError() {
-
+        Toast.makeText(this,getString(R.string.error_no_internet_connection), Toast.LENGTH_LONG).show()
     }
 
     override fun showProgress(message: String) {

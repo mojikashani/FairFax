@@ -1,6 +1,5 @@
 package com.moji.fairfaxtest.presentation.recyclerviews
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +24,7 @@ class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var news
         val txtTheAbstract:TextView = layout.txtTheAbstract
         val txtByLine:TextView = layout.txtByLine
         val imgNews: ImageView = layout.imgNews
+        val txtReadMore: TextView = layout.txtReadMore
     }
 
     fun setData(_newsAssets: List<NewsAssetView>?) {
@@ -47,13 +47,14 @@ class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var news
             holder.txtHeadLine.text = asset.headline
             holder.txtTheAbstract.text = asset.theAbstract
             holder.txtByLine.text = asset.byLine
-            holder.layout.setOnClickListener {
+            holder.txtReadMore.setOnClickListener {
                 asset.url?.let {
                     newsOnClickListener.onNewsAssetClick(asset.url)
                 }
             }
-            asset?.relatedImages?.get(0)?.url?.let {
-                Picasso.with(holder.layout.context).load(asset.relatedImages[0].url).into(holder.imgNews)
+            val smallestImage = asset?.getSmallestImage()
+            smallestImage?.url?.let {
+                Picasso.with(holder.layout.context).load(smallestImage.url).into(holder.imgNews)
             }
         }
     }

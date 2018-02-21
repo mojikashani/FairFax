@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">FairFaxTest</string>
+    <string name="app_name">Fair Fax</string>
+    <string name="read_more">Read More >></string>
+    <string name="error_unknown_error">Unknown Error</string>
+    <string name="error_no_internet_connection">No internet connection</string>
+    <string name="error_authentication_failed">Authentication failed</string>
 </resources>

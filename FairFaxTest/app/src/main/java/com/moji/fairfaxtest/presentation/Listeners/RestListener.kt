@@ -28,7 +28,7 @@ interface RestListener {
      * @param message Human readable message that tells the user the nature of the error and, ideally, what they can
      * do to fix it.
      */
-    fun onError(message: String)
+    fun onError(message: String?)
 
     /**
      * Invoked instead of onError when the app discovers that no network is avaiable to the device. A simple

@@ -27,4 +27,19 @@ class NewsAssetView : Serializable {
 
     @SerializedName("relatedImages")
     val relatedImages: List<RelatedImageView>? = null
+
+    fun getSmallestImage():RelatedImageView?{
+        var min :Int = Int.MAX_VALUE;
+        var smallestImage : RelatedImageView? = null
+        relatedImages?.forEach {
+            var h = it?.height?:0
+            var w = it?.width?:0
+            if(h*w < min){
+                min = h*w
+                smallestImage = it
+            }
+
+        }
+        return smallestImage
+    }
 }

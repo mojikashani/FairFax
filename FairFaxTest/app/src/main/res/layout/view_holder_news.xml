@@ -1,29 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="@dimen/news_holder_padding_top"
+    android:paddingLeft="@dimen/news_holder_padding"
+    android:paddingRight="@dimen/news_holder_padding"
+    android:paddingBottom="@dimen/news_holder_padding">
+
     <TextView
         android:id="@+id/txtHeadLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:layout_marginBottom="@dimen/margin_standard"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_news_title"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/txtTheAbstract"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:textColor="@color/grey"
+        android:textSize="@dimen/text_size_news_subtitle" />
+
+    <TextView
+        android:id="@+id/txtReadMore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_standard"
+        android:textColor="@color/link_blue"
+        android:text="@string/read_more"
+        android:textStyle="italic"
+        android:textSize="@dimen/text_size_news_subtitle" />
+
     <TextView
         android:id="@+id/txtByLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:textColor="@color/grey"
+        android:textSize="@dimen/text_size_news_subtitle"
+        android:textStyle="italic" />
+
     <ImageView
         android:id="@+id/imgNews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
+        android:layout_marginTop="@dimen/margin_double"
+        android:layout_marginBottom="@dimen/margin_double"
         android:adjustViewBounds="true"
-        android:layout_margin="10dp"/>
+        android:scaleType="fitXY" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_width"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:background="@color/light_grey" />
 </LinearLayout>
