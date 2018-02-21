@@ -1,6 +1,6 @@
 package com.moji.fairfaxtest.presentation.presenters
 
-import com.moji.fairfaxtest.data.RestApi.RestApi
+import com.moji.fairfaxtest.data.rest.RestApi
 import com.moji.fairfaxtest.domain.entities.NewsResponseView
 import com.moji.fairfaxtest.presentation.Listeners.NewsListener
 import io.reactivex.Observer
@@ -22,15 +22,16 @@ class NewsPresenter : Presenter<NewsListener> {
     fun getNewsList() {
         listener?.let {
             it.showProgress("beep")
-            RestApi.getEndpoints().askForNews()
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<NewsResponseView> {
+            RestApi.getEndpoints()?.askForNews()
+                    ?.subscribeOn(Schedulers.newThread())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe(object : Observer<NewsResponseView> {
                         override fun onSubscribe(d: Disposable) {
                         }
 
                         override fun onNext(response: NewsResponseView) {
-                            it.onNewsFetched(response)
+                            val soredList = response.newsViewList?.sortedByDescending { it.timeStamp } ?: emptyList()
+                            it.onNewsFetched(soredList)
                             it.hideProgress()
                         }
 
