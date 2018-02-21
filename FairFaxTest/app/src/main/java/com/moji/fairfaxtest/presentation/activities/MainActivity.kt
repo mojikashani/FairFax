@@ -2,10 +2,8 @@ package com.moji.fairfaxtest.presentation.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.recyclerview.R.attr.layoutManager
 import android.widget.Toast
 import com.moji.fairfaxtest.R
-import com.moji.fairfaxtest.domain.entities.NewsResponseView
 import com.moji.fairfaxtest.presentation.Listeners.NewsListener
 import com.moji.fairfaxtest.presentation.presenters.NewsPresenter
 import kotlinx.android.synthetic.main.activity_main.*

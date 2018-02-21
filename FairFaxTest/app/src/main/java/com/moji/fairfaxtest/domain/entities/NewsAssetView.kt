@@ -24,4 +24,7 @@ class NewsAssetView : Serializable {
 
     @SerializedName("timeStamp")
     val timeStamp: Long? = null
+
+    @SerializedName("relatedImages")
+    val relatedImages: List<RelatedImageView>? = null
 }

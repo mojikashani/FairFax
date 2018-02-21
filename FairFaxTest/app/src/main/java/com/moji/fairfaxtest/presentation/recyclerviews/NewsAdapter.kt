@@ -1,14 +1,17 @@
 package com.moji.fairfaxtest.presentation.recyclerviews
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 
 import com.moji.fairfaxtest.R
 import com.moji.fairfaxtest.domain.entities.NewsAssetView
 import com.moji.fairfaxtest.presentation.Listeners.NewsOnClickListener
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.view_holder_news.view.*
 
 /**
@@ -21,6 +24,7 @@ class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var news
         val txtHeadLine:TextView = layout.txtHeadLine
         val txtTheAbstract:TextView = layout.txtTheAbstract
         val txtByLine:TextView = layout.txtByLine
+        val imgNews: ImageView = layout.imgNews
     }
 
     fun setData(_newsAssets: List<NewsAssetView>?) {
@@ -47,6 +51,9 @@ class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var news
                 asset.url?.let {
                     newsOnClickListener.onNewsAssetClick(asset.url)
                 }
+            }
+            asset?.relatedImages?.get(0)?.url?.let {
+                Picasso.with(holder.layout.context).load(asset.relatedImages[0].url).into(holder.imgNews)
             }
         }
     }
