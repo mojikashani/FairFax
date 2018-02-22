@@ -5,6 +5,8 @@ import java.io.Serializable
 
 /**
  * Created by moji on 21/2/18.
+ * -------------------------------
+ * RELATED IMAGE entity used for converting jSon string to objects
  */
 
 class RelatedImageView : Serializable {

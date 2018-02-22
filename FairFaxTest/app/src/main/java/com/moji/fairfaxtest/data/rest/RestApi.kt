@@ -10,16 +10,22 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * Created by moji on 19/2/18.
+ * ---------------------------------
+ * This class create and initialise retrofit and also
+ * provide a reference to our endpoints
  */
 
 object RestApi {
     private var endpoints: Endpoints? = null
 
     private fun provideApiEndpoints(): Endpoints {
+        // setting timeouts for all retrofit calls
         val httpClient = OkHttpClient.Builder()
         httpClient.readTimeout(30, TimeUnit.SECONDS)
         httpClient.connectTimeout(30, TimeUnit.SECONDS)
 
+        // setting up retrofit so it automatically convert responses from
+        // jSon format to the given object
         val retrofit = Retrofit.Builder()
                 .baseUrl("https://bruce-v2-mob.fairfaxmedia.com.au/")
                 .addConverterFactory(GsonConverterFactory.create())

@@ -15,8 +15,10 @@ import kotlinx.android.synthetic.main.view_holder_news.view.*
 
 /**
  * Created by moji on 21/2/18.
+ * ----------------------------------
+ * RecyclerView Adapter for News RecyclerView
  */
-
+// a reference to NewsOnClickListener is needed so Adapter can communicate with activities
 class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var newsOnClickListener: NewsOnClickListener) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     inner class ViewHolder(var layout: View) : RecyclerView.ViewHolder(layout) {
@@ -47,13 +49,16 @@ class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var news
             holder.txtHeadLine.text = asset.headline
             holder.txtTheAbstract.text = asset.theAbstract
             holder.txtByLine.text = asset.byLine
+            // when user tap "Read More>>" link onNewsAssetClick will be called
             holder.txtReadMore.setOnClickListener {
                 asset.url?.let {
                     newsOnClickListener.onNewsAssetClick(asset.url)
                 }
             }
+            // getting the smallest image from related image
             val smallestImage = asset?.getSmallestImage()
             smallestImage?.url?.let {
+                // Picasso handles image catching very well
                 Picasso.with(holder.layout.context).load(smallestImage.url).into(holder.imgNews)
             }
         }
