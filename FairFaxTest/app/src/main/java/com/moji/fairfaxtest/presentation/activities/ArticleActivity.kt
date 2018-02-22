@@ -21,5 +21,4 @@ class ArticleActivity  : AppCompatActivity()  {
         webViewNews.loadUrl(url)
     }
 
-
 }

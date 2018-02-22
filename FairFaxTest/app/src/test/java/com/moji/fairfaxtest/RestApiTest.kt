@@ -5,7 +5,7 @@ import com.moji.fairfaxtest.data.rest.RestApi
 import com.moji.fairfaxtest.domain.entities.NewsResponseView
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import org.junit.Assert
+import org.junit.Assert.*
 
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -35,16 +35,16 @@ class RestApiTest {
                         override fun onSubscribe(d: Disposable) {
                         }
                         override fun onNext(response: NewsResponseView) {
-                            Assert.assertTrue(response.newsViewList?.size ?: 0 >= 1)
+                            assertTrue(response.newsViewList?.size ?: 0 >= 1)
                         }
                         override fun onError(e: Throwable) {
-                            Assert.fail()
+                            fail()
                         }
                         override fun onComplete() {
                         }
                     })
         }else{
-            Assert.fail()
+            fail()
         }
     }
 

@@ -46,23 +46,24 @@ class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
 
                             // This is called when the call is successful
                             override fun onNext(response: NewsResponseView) {
+                                // Notify that the progress view should be hidden now
+                                it.hideProgress()
                                 // this sort the data by its time span and pass it to onNewsFetched
                                 val soredList = response.newsViewList?.sortedByDescending { it.timeStamp } ?: emptyList()
                                 it.onNewsFetched(soredList)
-                                // Notify that the progress view should be hidden now
-                                it.hideProgress()
+
                             }
 
                             // this is called when there is an error
                             override fun onError(e: Throwable) {
+                                // Notify that the progress view should be hidden now
+                                it.hideProgress()
                                 // if it is a 401 error onAuthorizationError will be called
                                 if (e is HttpException && e.code() == 401) {
                                     it.onAuthorizationError(e)
                                 }else {// otherwise onError will be called
                                     it.onError(e?.message)
                                 }
-                                // Notify that the progress view should be hidden now
-                                it.hideProgress()
                             }
 
                             override fun onComplete() {
