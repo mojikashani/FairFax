@@ -29,6 +29,8 @@ class PresentersLocalTest {
 
     @Before
     fun setUp() {
+        /** mocking Context, ConnectivityManager and NetworkInfo so it assume there is
+         a network connection **/
         val connectivityManager: ConnectivityManager = mock(ConnectivityManager::class.java)
         val networkInfo: NetworkInfo = mock(NetworkInfo::class.java)
         Mockito.`when`( mMockContext.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn( connectivityManager )
