@@ -9,6 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import android.net.ConnectivityManager
+import io.reactivex.Scheduler
 import retrofit2.adapter.rxjava.HttpException
 
 
@@ -25,12 +26,12 @@ class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
     private var listener: NewsListener? = null
 
     // attach listener for its callbacks
-    override fun attachListener(listener: NewsListener) {
-        this.listener = listener
+    override fun attachListener(_listener: NewsListener) {
+        this.listener = _listener
     }
 
     // this method calls all api request and handle all possible scenarios
-    fun getNewsList() {
+    fun getNewsList(observeOn : Scheduler) {
         listener?.let {
             // if there is no network available onNoNetworkError will be called
             if(isNetworkAvailable()) {
@@ -39,7 +40,7 @@ class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
                 // calls api using reactive java and retrofit
                 RestApi.getEndpoints()?.askForNews()
                         ?.subscribeOn(Schedulers.newThread())
-                        ?.observeOn(AndroidSchedulers.mainThread())
+                        ?.observeOn(observeOn)
                         ?.subscribe(object : Observer<NewsResponseView> {
                             override fun onSubscribe(d: Disposable) {
                             }
@@ -62,7 +63,7 @@ class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
                                 if (e is HttpException && e.code() == 401) {
                                     it.onAuthorizationError(e)
                                 }else {// otherwise onError will be called
-                                    it.onError(e?.message)
+                                    it.onError(e.message)
                                 }
                             }
 
@@ -76,6 +77,9 @@ class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
         }
     }
 
+    fun getNewsList(){
+        getNewsList(AndroidSchedulers.mainThread())
+    }
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo

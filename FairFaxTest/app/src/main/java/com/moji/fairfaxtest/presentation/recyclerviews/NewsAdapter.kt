@@ -56,7 +56,7 @@ class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var news
                 }
             }
             // getting the smallest image from related image
-            val smallestImage = asset?.getSmallestImage()
+            val smallestImage = asset.getSmallestImage()
             smallestImage?.url?.let {
                 // Picasso handles image catching very well
                 Picasso.with(holder.layout.context).load(smallestImage.url).into(holder.imgNews)
