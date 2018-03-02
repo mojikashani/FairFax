@@ -12,6 +12,9 @@ import android.widget.Toast
 import com.moji.fairfaxtest.domain.entities.NewsAssetView
 import com.moji.fairfaxtest.presentation.Listeners.NewsOnClickListener
 import com.moji.fairfaxtest.presentation.recyclerviews.NewsAdapter
+import android.os.Parcelable
+
+
 
 // NewsListener: used to listen to presenters call backs
 // NewsOnClickListener: used to listen to recyclerView callbacks
@@ -19,10 +22,12 @@ class MainActivity : AppCompatActivity() , NewsListener, NewsOnClickListener {
     companion object {
         // used to pass extras to another activity through intents
         val EXTRA_URL : String = "extra_url"
+        val LIST_STATE_KEY = "recycler_list_state"
     }
     // NewsPresenter: used to call APIs and separate presentation layer from data layer
     private val presenter = NewsPresenter(this)
     private val newsAdapter = NewsAdapter(emptyList(), this)
+    private var listState: Parcelable? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,9 +56,28 @@ class MainActivity : AppCompatActivity() , NewsListener, NewsOnClickListener {
         recyclerNews.adapter = newsAdapter
     }
 
+    override fun onSaveInstanceState(state: Bundle?) {
+        super.onSaveInstanceState(state)
+        // Save list state
+        listState = recyclerNews.layoutManager.onSaveInstanceState()
+        state?.putParcelable(LIST_STATE_KEY, listState)
+    }
+
+    override fun onRestoreInstanceState(state: Bundle?) {
+        super.onRestoreInstanceState(state)
+        // Retrieve list state and list/item positions
+        if (state != null)
+            listState = state.getParcelable(LIST_STATE_KEY)
+    }
+
     // this is called when requesting for news list is successful
     override fun onNewsFetched(newsAssets: List<NewsAssetView>) {
         newsAdapter.setData(newsAssets)
+        // check if there is a saved list state that has not been applied
+        if (listState != null) {
+            recyclerNews.layoutManager.onRestoreInstanceState(listState)
+            listState = null
+        }
     }
 
     // this is called when users tap on "Read More>>" link
