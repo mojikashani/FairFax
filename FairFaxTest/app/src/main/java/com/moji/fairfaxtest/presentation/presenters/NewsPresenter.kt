@@ -9,6 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import android.net.ConnectivityManager
+import com.moji.fairfaxtest.data.rest.Endpoints
 import io.reactivex.Scheduler
 import retrofit2.adapter.rxjava.HttpException
 
@@ -31,14 +32,14 @@ class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
     }
 
     // this method calls all api request and handle all possible scenarios
-    fun getNewsList(observeOn : Scheduler) {
+    fun getNewsList(observeOn : Scheduler, endpoints : Endpoints?) {
         listener?.let {
             // if there is no network available onNoNetworkError will be called
             if(isNetworkAvailable()) {
                 // Notify that a progress view should be shown now
                 it.showProgress("")
                 // calls api using reactive java and retrofit
-                RestApi.getEndpoints()?.askForNews()
+                endpoints?.askForNews()
                         ?.subscribeOn(Schedulers.newThread())
                         ?.observeOn(observeOn)
                         ?.subscribe(object : Observer<NewsResponseView> {
@@ -78,7 +79,7 @@ class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
     }
 
     fun getNewsList(){
-        getNewsList(AndroidSchedulers.mainThread())
+        getNewsList(AndroidSchedulers.mainThread(), RestApi.getEndpoints())
     }
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

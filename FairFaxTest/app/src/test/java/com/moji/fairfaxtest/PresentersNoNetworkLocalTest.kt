@@ -2,6 +2,7 @@ package com.moji.fairfaxtest
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.moji.fairfaxtest.data.rest.RestApi
 import com.moji.fairfaxtest.domain.entities.NewsAssetView
 import com.moji.fairfaxtest.presentation.Listeners.NewsListener
 import com.moji.fairfaxtest.presentation.presenters.NewsPresenter
@@ -22,7 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner
  * Created by moji on 22/2/18.
  */
 @RunWith(MockitoJUnitRunner::class)
-class PresentersLocalNoNetworkTest {
+class PresentersNoNetworkLocalTest {
 
     @Mock
     private val mMockContext: Context = mock(Context::class.java)
@@ -62,7 +63,7 @@ class PresentersLocalNoNetworkTest {
             override fun showProgress(message: String) {
             }
         })
-        presenter.getNewsList(Schedulers.newThread())
+        presenter.getNewsList(Schedulers.newThread(), RestApi.getEndpoints())
     }
 }
 
