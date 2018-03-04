@@ -12,11 +12,17 @@ import java.io.Serializable
 class RelatedImageView : Serializable {
 
     @SerializedName("url")
-    val url: String? = null
+    var url: String? = null
 
     @SerializedName("width")
-    val width: Int? = null
+    var width: Int? = null
 
     @SerializedName("height")
-    val height: Int? = null
+    var height: Int? = null
+
+    constructor(_url:String, _width:Int, _height:Int){
+        url = _url
+        width = _width
+        height = _height
+    }
 }

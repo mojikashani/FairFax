@@ -26,7 +26,7 @@ class NewsAssetView : Serializable {
     val timeStamp: Long? = null
 
     @SerializedName("relatedImages")
-    val relatedImages: List<RelatedImageView>? = null
+    var relatedImages: List<RelatedImageView>? = null
 
     // find the smallest image from related images
     // by calculating image size from its width and height
