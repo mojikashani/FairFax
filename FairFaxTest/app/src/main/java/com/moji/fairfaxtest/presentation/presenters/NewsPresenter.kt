@@ -9,9 +9,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import android.net.ConnectivityManager
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.moji.fairfaxtest.data.rest.Endpoints
-import io.reactivex.Scheduler
-import retrofit2.adapter.rxjava.HttpException
 
 
 /**
@@ -23,49 +22,46 @@ import retrofit2.adapter.rxjava.HttpException
  * and provide a neat an reliable class to be used within presentation layer
  */
 
-class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
-    private var listener: NewsListener? = null
-
-    // attach listener for its callbacks
-    override fun attachListener(_listener: NewsListener) {
-        this.listener = _listener
-    }
+class NewsPresenter(private val context : Context, private val listener : NewsListener) : Presenter<NewsListener> {
 
     // this method calls all api request and handle all possible scenarios
-    fun getNewsList(observeOn : Scheduler, endpoints : Endpoints?) {
+    fun getNewsList(runSynchronized: Boolean, endpoints : Endpoints?) {
         listener?.let {
+            // Notify that a progress view should be shown now
+            it.showProgress("")
             // if there is no network available onNoNetworkError will be called
             if(isNetworkAvailable()) {
-                // Notify that a progress view should be shown now
-                it.showProgress("")
                 // calls api using reactive java and retrofit
-                endpoints?.askForNews()
-                        ?.subscribeOn(Schedulers.newThread())
-                        ?.observeOn(observeOn)
-                        ?.subscribe(object : Observer<NewsResponseView> {
+                var observable = endpoints?.askForNews()
+                // run synchronised if flag is false
+                if(!runSynchronized) {
+                    observable = observable
+                            ?.subscribeOn(Schedulers.newThread())
+                            ?.observeOn(AndroidSchedulers.mainThread())
+                }
+                observable?.subscribe(object : Observer<NewsResponseView> {
                             override fun onSubscribe(d: Disposable) {
                             }
 
                             // This is called when the call is successful
                             override fun onNext(response: NewsResponseView) {
-                                // Notify that the progress view should be hidden now
-                                it.hideProgress()
                                 // this sort the data by its time span and pass it to onNewsFetched
                                 val soredList = response.newsViewList?.sortedByDescending { it.timeStamp } ?: emptyList()
                                 it.onNewsFetched(soredList)
-
+                                // Notify that the progress view should be hidden now
+                                it.hideProgress()
                             }
 
                             // this is called when there is an error
                             override fun onError(e: Throwable) {
-                                // Notify that the progress view should be hidden now
-                                it.hideProgress()
                                 // if it is a 401 error onAuthorizationError will be called
                                 if (e is HttpException && e.code() == 401) {
                                     it.onAuthorizationError(e)
                                 }else {// otherwise onError will be called
                                     it.onError(e.message)
                                 }
+                                // Notify that the progress view should be hidden now
+                                it.hideProgress()
                             }
 
                             override fun onComplete() {
@@ -79,7 +75,7 @@ class NewsPresenter(private val context : Context) : Presenter<NewsListener> {
     }
 
     fun getNewsList(){
-        getNewsList(AndroidSchedulers.mainThread(), RestApi.getEndpoints())
+        getNewsList(false, RestApi.getEndpoints())
     }
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

@@ -10,7 +10,7 @@ import org.junit.Test
 /**
  * Created by moji on 4/3/18.
  */
-class RelatedImageTest {
+class RelatedImageJUnitTest {
 
     // check if getSmallestImage returns the smallest image
     @Test

@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() , NewsListener, NewsOnClickListener {
         val LIST_STATE_KEY = "recycler_list_state"
     }
     // NewsPresenter: used to call APIs and separate presentation layer from data layer
-    private val presenter = NewsPresenter(this)
+    private val presenter = NewsPresenter(this, this)
     private val newsAdapter = NewsAdapter(emptyList(), this)
     private var listState: Parcelable? = null
 
@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() , NewsListener, NewsOnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        // setting up presenters and assigning listener for its callbacks
-        presenter.attachListener(this)
         // asking presenter to retrieve news list from the server
         // the result would be received through NewsListener callbacks
         presenter.getNewsList()
