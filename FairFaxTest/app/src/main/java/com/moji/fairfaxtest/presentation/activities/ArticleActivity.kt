@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.moji.fairfaxtest.R
 import kotlinx.android.synthetic.main.activity_article.*
+import android.webkit.WebViewClient
+
+
 
 /**
  * Created by moji on 21/2/18.
@@ -18,6 +21,7 @@ class ArticleActivity  : AppCompatActivity()  {
         setContentView(R.layout.activity_article)
         // getting url from intent and loading that to a web view
         val url = intent.getStringExtra(MainActivity.EXTRA_URL)
+        webViewNews.webViewClient = WebViewClient()
         webViewNews.loadUrl(url)
     }
 
