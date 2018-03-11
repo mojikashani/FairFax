@@ -34,7 +34,6 @@ class PresentersSucceedMockitoTest {
     @Mock
     private val mMockNewsListener: NewsListener = mock(NewsListener::class.java)
 
-    @InjectMocks
     lateinit var presenter : NewsPresenter
 
     @Captor
@@ -48,6 +47,8 @@ class PresentersSucceedMockitoTest {
         val networkInfo: NetworkInfo = mock(NetworkInfo::class.java)
         Mockito.`when`( mMockContext.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn( connectivityManager )
         Mockito.`when`( connectivityManager.activeNetworkInfo).thenReturn( networkInfo )
+        presenter = NewsPresenter(mMockContext, RestApi.getEndpoints(), mMockNewsListener)
+        presenter.runASynchronous = false
     }
 
     /** test NewsPresenter behaviour on a successful scenario
@@ -55,7 +56,7 @@ class PresentersSucceedMockitoTest {
      *  hide progress view**/
     @Test
     fun presenter_show_progress_returns_a_new_asset_hide_progress() {
-        presenter.getNewsList(true, RestApi.getEndpoints())
+        presenter.getNewsList()
         verify(mMockNewsListener).showProgress(anyString())
         verify(mMockNewsListener).onNewsFetched(capture(captor))
         verify(mMockNewsListener).hideProgress()

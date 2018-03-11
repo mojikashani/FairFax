@@ -27,8 +27,7 @@ class PresentersNoNetworkMockitoTest {
     @Mock
     private val mMockNewsListener: NewsListener = mock(NewsListener::class.java)
 
-    @InjectMocks
-    lateinit var presenter : NewsPresenter
+    private lateinit var presenter : NewsPresenter
 
     @Before
     fun setUp() {
@@ -37,17 +36,16 @@ class PresentersNoNetworkMockitoTest {
         val connectivityManager: ConnectivityManager = mock(ConnectivityManager::class.java)
         Mockito.`when`( mMockContext.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn( connectivityManager )
         Mockito.`when`( connectivityManager.activeNetworkInfo).thenReturn( null )
+        presenter = NewsPresenter(mMockContext, RestApi.getEndpoints(), mMockNewsListener)
+        presenter.runASynchronous = false
     }
 
     /** test NewsPresenter behaviour on a unsuccessful scenario due to no active network
-     *  presenter show progress view then invoke onNoNetworkError method then
-     *  hide progress view**/
+     *  presenter  invoke onNoNetworkError method **/
     @Test
     fun presenter_show_progress_invoke_onNoNetworkError_then_hide_progress() {
-        presenter.getNewsList(true, RestApi.getEndpoints())
-        Mockito.verify(mMockNewsListener).showProgress(anyString())
+        presenter.getNewsList()
         Mockito.verify(mMockNewsListener).onNoNetworkError()
-        Mockito.verify(mMockNewsListener).hideProgress()
     }
 }
 

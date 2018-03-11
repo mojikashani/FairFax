@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 
 object RestApi {
-    private var endpoints: Endpoints? = null
+    private val endpoints = provideApiEndpoints()
 
     private fun provideApiEndpoints(): Endpoints {
         // setting timeouts for all retrofit calls
@@ -36,10 +36,7 @@ object RestApi {
         return retrofit.create(Endpoints::class.java)
     }
 
-    fun getEndpoints(): Endpoints? {
-        if (endpoints == null) {
-            endpoints = provideApiEndpoints()
-        }
+    fun getEndpoints(): Endpoints {
         return endpoints
     }
 }

@@ -26,8 +26,8 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment :  ToolbarFragment() , NewsListener, NewsOnClickListener {
     companion object {
         // used to pass extras to another activity through intents
-        val EXTRA_URL : String = "extra_url"
-        val LIST_STATE_KEY = "recycler_list_state"
+        const val EXTRA_URL : String = "extra_url"
+        const val LIST_STATE_KEY = "recycler_list_state"
     }
     // NewsPresenter: used to call APIs and separate presentation layer from data layer
     private lateinit var presenter : NewsPresenter
@@ -57,12 +57,13 @@ class MainFragment :  ToolbarFragment() , NewsListener, NewsOnClickListener {
             presenter.getNewsList()
         }
 
+        // set toolbar title
+        setToolbarTitle(getString(R.string.main_fragment_title))
+
         // setting up RecyclerView and assigning its adapter to it
         recyclerNews.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(activity)
-        recyclerNews.layoutManager =layoutManager
+        recyclerNews.layoutManager = LinearLayoutManager(activity)
         recyclerNews.adapter = newsAdapter
-        setToolbarTitle(getString(R.string.main_fragment_title))
     }
 
     override fun onSaveInstanceState(state: Bundle?) {
@@ -76,12 +77,11 @@ class MainFragment :  ToolbarFragment() , NewsListener, NewsOnClickListener {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null)
             listState = savedInstanceState.getParcelable(LIST_STATE_KEY)
-
     }
 
     // this is called when requesting for news list is successful
     override fun onNewsFetched(newsAssets: List<NewsAssetView>) {
-        newsAdapter.setData(newsAssets)
+        newsAdapter.data = newsAssets
         // check if there is a saved list state that has not been applied
         if (listState != null) {
             recyclerNews.layoutManager.onRestoreInstanceState(listState)

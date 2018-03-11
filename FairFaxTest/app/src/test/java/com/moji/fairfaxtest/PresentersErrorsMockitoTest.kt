@@ -46,6 +46,8 @@ class PresentersErrorsMockitoTest {
         Mockito.`when`( connectivityManager.activeNetworkInfo).thenReturn( networkInfo )
         // mocking endpoint, so whenever it gets called it throws an exception
         Mockito.`when`( mMockEndpoints.askForNews()).thenReturn( Observable.error(Throwable("Error")))
+
+        presenter.runASynchronous = false
     }
 
     /** test NewsPresenter behaviour on a unsuccessful scenario due to api call exception
@@ -53,7 +55,7 @@ class PresentersErrorsMockitoTest {
      *  hide progress view**/
     @Test
     fun presenter_show_progress_invoke_onError_then_hide_progress() {
-        presenter.getNewsList(true, mMockEndpoints)
+        presenter.getNewsList()
         verify(mMockNewsListener).showProgress(anyString())
         verify(mMockNewsListener).onError("Error")
         verify(mMockNewsListener).hideProgress()

@@ -21,20 +21,11 @@ import kotlinx.android.synthetic.main.view_holder_news.view.*
 // a reference to NewsOnClickListener is needed so Adapter can communicate with activities
 class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var newsOnClickListener: NewsOnClickListener) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
-    inner class ViewHolder(var layout: View) : RecyclerView.ViewHolder(layout) {
-        val txtHeadLine:TextView = layout.txtHeadLine
-        val txtTheAbstract:TextView = layout.txtTheAbstract
-        val txtByLine:TextView = layout.txtByLine
-        val imgNews: ImageView = layout.imgNews
-        val txtReadMore: TextView = layout.txtReadMore
-    }
-
-    fun setData(_newsAssets: List<NewsAssetView>?) {
-        _newsAssets?.let {
-            newsAssets = _newsAssets
+    var data: List<NewsAssetView>? = null
+        set(_data) {
+            newsAssets = _data
             notifyDataSetChanged()
         }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): NewsAdapter.ViewHolder {
@@ -45,7 +36,7 @@ class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var news
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val asset = newsAssets?.get(position)
-        if(asset != null) {
+        if (asset != null) {
             holder.txtHeadLine.text = asset.headline
             holder.txtTheAbstract.text = asset.theAbstract
             holder.txtByLine.text = asset.byLine
@@ -66,6 +57,14 @@ class NewsAdapter(private var newsAssets: List<NewsAssetView>?, private var news
 
     override fun getItemCount(): Int {
         return newsAssets?.size ?: 0
+    }
+
+    inner class ViewHolder(var layout: View) : RecyclerView.ViewHolder(layout) {
+        val txtHeadLine: TextView = layout.txtHeadLine
+        val txtTheAbstract: TextView = layout.txtTheAbstract
+        val txtByLine: TextView = layout.txtByLine
+        val imgNews: ImageView = layout.imgNews
+        val txtReadMore: TextView = layout.txtReadMore
     }
 
 }

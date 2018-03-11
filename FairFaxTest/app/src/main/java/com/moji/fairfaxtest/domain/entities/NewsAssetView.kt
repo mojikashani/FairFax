@@ -40,7 +40,6 @@ class NewsAssetView : Serializable {
                 min = h*w
                 smallestImage = it
             }
-
         }
         return smallestImage
     }
